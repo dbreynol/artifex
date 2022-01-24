@@ -1,0 +1,7 @@
+name: "artifex"
+output_dir: docs
+navbar:
+  title: "Artifex Spring 2022"
+  left:
+    - text: "Home"
+      href: index.html
