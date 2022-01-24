@@ -4,13 +4,13 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = F)
 library(kableExtra)
 library(tidyverse)
 library(lubridate)
 ```
 
-#### Artifex Spring 2022
+### Artifex Spring 2022
 
 Welcome to Artifex!
 
@@ -18,13 +18,20 @@ Welcome to Artifex!
 
 ```{r}
 
-
-
 t = mdy("1/24/2022")
 
-Week_of = c(t, t + (1:8 * 7))
+Week_of = c(t, t + (1:7 * 7))
 
-syll = data.frame("Week" = Week_of, Topic = letters[1:9] )
+Topics = c("Regression I (Estimation)",
+  "R fundamentals - functions",
+  "Regression II (Inference)",
+  "Github and R",
+  "Regression III (Prediction)",
+  "Exploratory Data Analysis",
+  "Regression IV (Diagnostics)",
+  "Spring Break!")
+
+syll = data.frame("Week" = Week_of, Topic = Topics, Deliverables = c("Exercises 1", rep("TBD", 6), "Nada")) 
 
 kbl(syll) %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
