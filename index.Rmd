@@ -12,8 +12,12 @@ library(lubridate)
 
 ### Artifex Spring 2022
 
-Welcome to Artifex!
+#### Overview
 
+Welcome to Artifex! The primary objective of this course/ club is to equip its members with the essential skills of a data scientist. The course delivery is a mix of lectures and project-based learning. The lectures will alternate between theory and tools. For the first half of the semester, the theory part of the course will be focused on linear regression and the tools part of the course will be related to R, R Studio, and Github. In the second half of the course, the theory will be focused on time series analysis and students will work in teams on a complex time series dataset hosted in Kaggle. 
+
+
+#### Schedule for the first half of the semester
 
 
 ```{r}
