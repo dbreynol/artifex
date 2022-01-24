@@ -1,28 +1,94 @@
 ---
-title: "Untitled"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(openintro)
+library(tidyverse)
+library(kableExtra)
+library(broom) # tidy function
 ```
 
-## R Markdown
+### Fundamentals of Linear Regression - Estimation
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+#### Introduction
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Suppose we want to model a response variable $Y$ in terms of some predictor variables, $(X_1, X_2, X_3)$. One very general form of the model would be:
 
-```{r cars}
-summary(cars)
+\begin{equation}
+Y = f(X_1, X_2, X_3) + \epsilon
+\end{equation}
+
+where $f$ is some unknown function and $\epsilon$ is the error. Usually the exact function $f$ is unknown and we have to make assumptions about it. One such assumption is that $f$ is a linear function, which implies the following model:
+
+\begin{equation}
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2+ \beta_3 X_3 + \epsilon.
+\end{equation}
+
+In this model, $(\beta_0, \beta_1, \beta_2, \beta_3)$ are unknown parameters. Thus, the *estimation* problem involves trying to estimate this set of coefficients.
+
+Although this model may seem restrictive and simple, it is an extremely useful tool for gathering insight about data. It also introduces fundamental concepts to more complex statistical/ machine learning methods.
+
+
+#### Example
+
+Let's do a simple example regression analysis. We will use the county dataset from the openintro package to assess the linear association between the proportion of high school graduates in a country and the proportion of the county living in poverty. 
+
+```{r}
+# this chunk requires tidyverse and kableextra packages
+dat = county_complete %>% select(hs_grad_2019, poverty_2019) # select response, predictor
+kable(head(dat)) %>%
+  kable_styling(position = "center") # kable prints a dataframe 
 ```
 
-## Including Plots
+A good first step to any analysis is to visually explore the data. For this particular case, it is hard to beat a scatterplot for visualization.
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+ggplot(dat, aes(x= hs_grad_2019, y = poverty_2019)) + 
+  geom_point(alpha = 0.5) + 
+  theme_minimal() + 
+  ggtitle("High School Graduation Rate versus Poverty - 2019 Data")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+It seems like fitting a linear regression to this data is reasonable. To do so, we only need a simple function in R, <code>lm</code>. Let's fit the model and see what we get.
+
+```{r}
+mod = lm(poverty_2019 ~ hs_grad_2019, data = dat)
+kable(tidy(mod)) %>% kable_styling(position = "center") # requires broom package
+```
+
+How can we write down this model? What is the interpretation?
+
+Next, we will discuss where these estimates come from. 
+
+#### Estimation Details
+
+Let's briefly discuss [optimization](https://tutorial.math.lamar.edu/classes/calci/optimization.aspx). Suppose we have the function
+
+\begin{equation}
+f(x) = -x^2.
+\end{equation}
+
+and we want to know the value of $x$ that maximizes this function. How would we do this? 
+
+The estimation problem in linear regression is no different. Let's consider the simple linear regression model
+
+\begin{equation}
+y_i = \beta x_i + \epsilon_i.
+\end{equation}
+
+Our estimate of $\beta$, which we will call $\hat{\beta}$, will be the value of $\beta$ that minimizes the sum of squared differences between the observed and the predicted values. That is, it is the $\beta$ that minimizes this function:
+
+\begin{align}
+f(\beta) &= \sum_i (y_i - \hat{y}_i)^2 \\
+&= \sum_i (y_i - \beta x_i)^2 
+\end{align}
+
+What is this value?
+
+#### Exercises
+
+1. Among counties with greater than 95% high school graduates, which county has the highest unemployment rate?
+2. Using the command <code>data()</code>, find a dataset that interests you, generate a hypothesis regarding a linear association between two variables, and assess the hypothesis by first visualizing (using a scatterplot) and then fitting a linear regression model.
+3. (Optional) Repeat the optimization analysis above for the model $y_i = \beta_0 + \beta_1x_i$, taking partial derivatives and solving.

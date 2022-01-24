@@ -11,7 +11,7 @@
 
 
 
-<title>Untitled</title>
+<title>regression.utf8</title>
 
 <script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -23,6 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -300,29 +302,190 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Untitled</h1>
 
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<div id="fundamentals-of-linear-regression---estimation" class="section level3">
+<h3>Fundamentals of Linear Regression - Estimation</h3>
+<div id="introduction" class="section level4">
+<h4>Introduction</h4>
+<p>Suppose we want to model a response variable <span class="math inline">\(Y\)</span> in terms of some predictor variables, <span class="math inline">\((X_1, X_2, X_3)\)</span>. One very general form of the model would be:</p>
+<p><span class="math display">\[\begin{equation}
+Y = f(X_1, X_2, X_3) + \epsilon
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(f\)</span> is some unknown function and <span class="math inline">\(\epsilon\)</span> is the error. Usually the exact function <span class="math inline">\(f\)</span> is unknown and we have to make assumptions about it. One such assumption is that <span class="math inline">\(f\)</span> is a linear function, which implies the following model:</p>
+<p><span class="math display">\[\begin{equation}
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2+ \beta_3 X_3 + \epsilon.
+\end{equation}\]</span></p>
+<p>In this model, <span class="math inline">\((\beta_0, \beta_1, \beta_2, \beta_3)\)</span> are unknown parameters. Thus, the <em>estimation</em> problem involves trying to estimate this set of coefficients.</p>
+<p>Although this model may seem restrictive and simple, it is an extremely useful tool for gathering insight about data. It also introduces fundamental concepts to more complex statistical/ machine learning methods.</p>
 </div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="regression_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+<div id="example" class="section level4">
+<h4>Example</h4>
+<p>Let’s do a simple example regression analysis. We will use the county dataset from the openintro package to assess the linear association between the proportion of high school graduates in a country and the proportion of the county living in poverty.</p>
+<pre class="r"><code># this chunk requires tidyverse and kableextra packages
+dat = county_complete %&gt;% select(hs_grad_2019, poverty_2019) # select response, predictor
+kable(head(dat)) %&gt;%
+  kable_styling(position = &quot;center&quot;) # kable prints a dataframe </code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+hs_grad_2019
+</th>
+<th style="text-align:right;">
+poverty_2019
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+88.5
+</td>
+<td style="text-align:right;">
+15.2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+90.8
+</td>
+<td style="text-align:right;">
+10.4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+73.2
+</td>
+<td style="text-align:right;">
+30.7
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+79.1
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+80.5
+</td>
+<td style="text-align:right;">
+13.6
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+74.7
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+</tbody>
+</table>
+<p>A good first step to any analysis is to visually explore the data. For this particular case, it is hard to beat a scatterplot for visualization.</p>
+<pre class="r"><code>ggplot(dat, aes(x= hs_grad_2019, y = poverty_2019)) + 
+  geom_point(alpha = 0.5) + 
+  theme_minimal() + 
+  ggtitle(&quot;High School Graduation Rate versus Poverty - 2019 Data&quot;)</code></pre>
+<pre><code>## Warning: Removed 1876 rows containing missing values (geom_point).</code></pre>
+<p><img src="regression_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>It seems like fitting a linear regression to this data is reasonable. To do so, we only need a simple function in R, <code>lm</code>. Let’s fit the model and see what we get.</p>
+<pre class="r"><code>mod = lm(poverty_2019 ~ hs_grad_2019, data = dat)
+kable(tidy(mod)) %&gt;% kable_styling(position = &quot;center&quot;) # requires broom package</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+77.4447213
+</td>
+<td style="text-align:right;">
+2.0066198
+</td>
+<td style="text-align:right;">
+38.59462
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hs_grad_2019
+</td>
+<td style="text-align:right;">
+-0.7088124
+</td>
+<td style="text-align:right;">
+0.0228897
+</td>
+<td style="text-align:right;">
+-30.96645
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p>How can we write down this model? What is the interpretation?</p>
+<p>Next, we will discuss where these estimates come from.</p>
+</div>
+<div id="estimation-details" class="section level4">
+<h4>Estimation Details</h4>
+<p>Let’s briefly discuss <a href="https://tutorial.math.lamar.edu/classes/calci/optimization.aspx">optimization</a>. Suppose we have the function</p>
+<p><span class="math display">\[\begin{equation}
+f(x) = -x^2.
+\end{equation}\]</span></p>
+<p>and we want to know the value of <span class="math inline">\(x\)</span> that maximizes this function. How would we do this?</p>
+<p>The estimation problem in linear regression is no different. Let’s consider the simple linear regression model</p>
+<p><span class="math display">\[\begin{equation}
+y_i = \beta x_i + \epsilon_i.
+\end{equation}\]</span></p>
+<p>Our estimate of <span class="math inline">\(\beta\)</span>, which we will call <span class="math inline">\(\hat{\beta}\)</span>, will be the value of <span class="math inline">\(\beta\)</span> that minimizes the sum of squared differences between the observed and the predicted values. That is, it is the <span class="math inline">\(\beta\)</span> that minimizes this function:</p>
+<p><span class="math display">\[\begin{align}
+f(\beta) &amp;= \sum_i (y_i - \hat{y}_i)^2 \\
+&amp;= \sum_i (y_i - \beta x_i)^2 
+\end{align}\]</span></p>
+<p>What is this value?</p>
+</div>
+<div id="exercises" class="section level4">
+<h4>Exercises</h4>
+<ol style="list-style-type: decimal">
+<li>Among counties with greater than 95% high school graduates, which county has the highest unemployment rate?</li>
+<li>Using the command <code>data()</code>, find a dataset that interests you, generate a hypothesis regarding a linear association between two variables, and assess the hypothesis by first visualizing (using a scatterplot) and then fitting a linear regression model.</li>
+<li>(Optional) Repeat the optimization analysis above for the model <span class="math inline">\(y_i = \beta_0 + \beta_1x_i\)</span>, taking partial derivatives and solving.</li>
+</ol>
+</div>
 </div>
 
 
