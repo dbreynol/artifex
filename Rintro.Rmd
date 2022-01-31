@@ -5,6 +5,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+# 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
 ```
 
 ### R Fundamentals 
@@ -61,18 +62,22 @@ A function has three parts:
 
 - The <code>environment()</code>, the data structure that determines how the function finds the values associated with the names.
 
-# arguments + data: Ci
-6. <code>q2()</code>: mean_ci <- function(x, conf = 0.95) {
-  se <- sd(x) / sqrt(length(x))
-  alpha <- 1 - conf
-  mean(x) + se * qnorm(c(alpha / 2, 1 - alpha / 2))
-}
+To further illustrate the possible arguments our functions can take, let's try to make a function that takes two arguments: the first is a numeric vector and the second is a confidence level. Then, the function returns a confidence interval for $\mu$ at the desired confidence level. Recall that a confidence interval for $\mu$ takes the following form:
 
-# back to last time with beta
+\begin{equation}
+\bar{x} \pm t^\star \hat{\sigma}/\sqrt{n}
+\end{equation}
+
+For another example, let's consider the no-intercept regression model from last class and use a plot of the sum of squared errors for different $\beta$ values to obtain an estimator (that is, a value that minimizes the sum of squared differences). The function that we want to minimize is: 
+
+\begin{align}
+f(\beta) &= \sum_i (y_i - \hat{y}_i)^2 \\
+&= \sum_i (y_i - \beta x_i)^2 
+\end{align}
 
 
 
-#### Exercises
+#### Exercises 2
 
 1. <code>q1()</code>: a function that takes a numeric vector as input and returns the number of elements that are less than 10. 
 
@@ -88,7 +93,7 @@ A function has three parts:
 
 5. <code>q5()</code>: function takes numeric vector argument and changes each element to 1 if the element is $>1$ and 0 otherwise.
 
-6. (optional) 
+6. (Optional, but mandatory if you finish 1-5 in class) <code>q6()</code>: function that finds the sum of squared errors for $(\beta_0, \beta_1)$ in a simple linear regression model. Use output from this function and a 3d plot using <code>persp()</code> to obtain least squares estimates. Verify using <code>lm()</code>.
 
 
 

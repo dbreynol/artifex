@@ -348,18 +348,18 @@ sd.custom(x)</code></pre>
 <li><p>The <code>body()</code>, the code inside the function.</p></li>
 <li><p>The <code>environment()</code>, the data structure that determines how the function finds the values associated with the names.</p></li>
 </ul>
+<p>To further illustrate the possible arguments our functions can take, let’s try to make a function that takes two arguments: the first is a numeric vector and the second is a confidence level. Then, the function returns a confidence interval for <span class="math inline">\(\mu\)</span> at the desired confidence level. Recall that a confidence interval for <span class="math inline">\(\mu\)</span> takes the following form:</p>
+<p><span class="math display">\[\begin{equation}
+\bar{x} \pm t^\star \hat{\sigma}/\sqrt{n}
+\end{equation}\]</span></p>
+<p>For another example, let’s consider the no-intercept regression model from last class and use a plot of the sum of squared errors for different <span class="math inline">\(\beta\)</span> values to obtain an estimator (that is, a value that minimizes the sum of squared differences). The function that we want to minimize is:</p>
+<p><span class="math display">\[\begin{align}
+f(\beta) &amp;= \sum_i (y_i - \hat{y}_i)^2 \\
+&amp;= \sum_i (y_i - \beta x_i)^2 
+\end{align}\]</span></p>
 </div>
-</div>
-<div id="arguments-data-ci" class="section level1">
-<h1>arguments + data: Ci</h1>
-<ol start="6" style="list-style-type: decimal">
-<li><code>q2()</code>: mean_ci &lt;- function(x, conf = 0.95) { se &lt;- sd(x) / sqrt(length(x)) alpha &lt;- 1 - conf mean(x) + se * qnorm(c(alpha / 2, 1 - alpha / 2)) }</li>
-</ol>
-</div>
-<div id="back-to-last-time-with-beta" class="section level1">
-<h1>back to last time with beta</h1>
-<div id="exercises" class="section level4">
-<h4>Exercises</h4>
+<div id="exercises-2" class="section level4">
+<h4>Exercises 2</h4>
 <ol style="list-style-type: decimal">
 <li><p><code>q1()</code>: a function that takes a numeric vector as input and returns the number of elements that are less than 10.</p></li>
 <li><p><code>q2()</code>: a function that takes a numeric vector as input and returns the range of the elements (difference between the max and the min).</p></li>
@@ -371,7 +371,7 @@ sd.custom(x)</code></pre>
 \end{equation}\]</span></p>
 <ol start="5" style="list-style-type: decimal">
 <li><p><code>q5()</code>: function takes numeric vector argument and changes each element to 1 if the element is <span class="math inline">\(&gt;1\)</span> and 0 otherwise.</p></li>
-<li><p>(optional)</p></li>
+<li><p>(Optional, but mandatory if you finish 1-5 in class) <code>q6()</code>: function that finds the sum of squared errors for <span class="math inline">\((\beta_0, \beta_1)\)</span> in a simple linear regression model. Use output from this function and a 3d plot using <code>persp()</code> to obtain least squares estimates. Verify using <code>lm()</code>.</p></li>
 </ol>
 </div>
 </div>

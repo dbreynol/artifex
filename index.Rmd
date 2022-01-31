@@ -1,5 +1,5 @@
 ---
-#title: "Untitled"
+title: "Course overview"
 output: html_document
 ---
 
@@ -37,7 +37,7 @@ Topics = c("Regression I (Estimation)",
   "Regression IV (Diagnostics)",
   "Spring Break!")
 
-syll = data.frame("Week" = Week_of, Topic = Topics, Deliverables = c("Exercises 1", rep("TBD", 6), "Nada")) 
+syll = data.frame("Week" = Week_of, Topic = Topics, Deliverables = c("Exercises 1", "Exercises 2", rep("TBD", 5), "Nada")) 
 
 kbl(syll) %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
