@@ -340,7 +340,7 @@ sd.custom = function(x) {
 
 sd.custom(x)</code></pre>
 <pre><code>## [1] 0.9610394</code></pre>
-<pre class="r"><code>sd(x)</code></pre>
+<pre class="r"><code>sd(x) # validate output of our custom function with the built-in version</code></pre>
 <pre><code>## [1] 0.9610394</code></pre>
 <p>A function has three parts:</p>
 <ul>
@@ -352,11 +352,38 @@ sd.custom(x)</code></pre>
 <p><span class="math display">\[\begin{equation}
 \bar{x} \pm t^\star \hat{\sigma}/\sqrt{n}
 \end{equation}\]</span></p>
+<pre class="r"><code>mean_ci &lt;- function(x, conf = 0.95) {
+  n = length(x)
+  se &lt;- sd(x) / sqrt(n)  # se(x.bar)
+  alpha &lt;- 1 - conf
+  mean(x) + se * qt(c(alpha / 2, 1 - alpha / 2), df = n - 1)
+}
+
+x &lt;- runif(100)
+mean_ci(x)</code></pre>
+<pre><code>## [1] 0.4626294 0.5677198</code></pre>
 <p>For another example, let’s consider the no-intercept regression model from last class and use a plot of the sum of squared errors for different <span class="math inline">\(\beta\)</span> values to obtain an estimator (that is, a value that minimizes the sum of squared differences). The function that we want to minimize is:</p>
 <p><span class="math display">\[\begin{align}
 f(\beta) &amp;= \sum_i (y_i - \hat{y}_i)^2 \\
 &amp;= \sum_i (y_i - \beta x_i)^2 
 \end{align}\]</span></p>
+<p>Let us generate some data below and write this function,</p>
+<pre class="r"><code>n = 100 # observations
+x = rnorm(n)
+y = rnorm(n, mean = x * 2, sd = 1) # y ~ N(2X, 1)
+x.tilde = x - mean(x) # mean-centered prediction
+y.tilde = y - mean(y) # mean-centered response
+
+sse = function(beta) { sum((y.tilde - beta * x.tilde)^2) }
+
+beta.seq = seq(from = -5, to = 10, by = 0.01)
+yvals = sapply(beta.seq, sse)
+
+plot(beta.seq, yvals, 
+     main = &quot;Sum of Squared Errors&quot;, xlab = &quot;beta&quot;, ylab = &quot;SSE&quot;)</code></pre>
+<p><img src="Rintro_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code># beta.seq[which.min(yvals)] # what is the minimizer?</code></pre>
+<p>This confirms that the <span class="math inline">\(\hat{\beta}\)</span> found using this method (grid search) is equal to that found using <code>lm()</code>, or calculus!</p>
 </div>
 <div id="exercises-2" class="section level4">
 <h4>Exercises 2</h4>

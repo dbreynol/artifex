@@ -48,7 +48,7 @@ sd.custom = function(x) {
 }
 
 sd.custom(x)
-sd(x)
+sd(x) # validate output of our custom function with the built-in version
 ```
 
 
@@ -67,6 +67,18 @@ To further illustrate the possible arguments our functions can take, let's try t
 \bar{x} \pm t^\star \hat{\sigma}/\sqrt{n}
 \end{equation}
 
+```{r}
+mean_ci <- function(x, conf = 0.95) {
+  n = length(x)
+  se <- sd(x) / sqrt(n)  # se(x.bar)
+  alpha <- 1 - conf
+  mean(x) + se * qt(c(alpha / 2, 1 - alpha / 2), df = n - 1)
+}
+
+x <- runif(100)
+mean_ci(x)
+```
+
 For another example, let's consider the no-intercept regression model from last class and use a plot of the sum of squared errors for different $\beta$ values to obtain an estimator (that is, a value that minimizes the sum of squared differences). The function that we want to minimize is: 
 
 \begin{align}
@@ -74,6 +86,29 @@ f(\beta) &= \sum_i (y_i - \hat{y}_i)^2 \\
 &= \sum_i (y_i - \beta x_i)^2 
 \end{align}
 
+Let us generate some data below and write this function,
+
+```{r}
+n = 100 # observations
+x = rnorm(n)
+y = rnorm(n, mean = x * 2, sd = 1) # y ~ N(2X, 1)
+x.tilde = x - mean(x) # mean-centered prediction
+y.tilde = y - mean(y) # mean-centered response
+
+sse = function(beta) { sum((y.tilde - beta * x.tilde)^2) }
+
+beta.seq = seq(from = -5, to = 10, by = 0.01)
+yvals = sapply(beta.seq, sse)
+
+plot(beta.seq, yvals, 
+     main = "Sum of Squared Errors", xlab = "beta", ylab = "SSE")
+
+# beta.seq[which.min(yvals)] # what is the minimizer?
+
+```
+
+
+This confirms that the $\hat{\beta}$ found using this method (grid search) is equal to that found using <code>lm()</code>, or calculus! 
 
 
 #### Exercises 2
