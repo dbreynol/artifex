@@ -7,3 +7,5 @@ navbar:
       href: index.html
     - text: "Regression"
       href: regression.html
+    - text: "Toolbox - R"
+      href: Rintro.html

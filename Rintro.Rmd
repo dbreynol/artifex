@@ -1,0 +1,96 @@
+---
+#title: "r"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### R Fundamentals 
+#### Functions
+
+R comes with a great amount of built-in functionality. However, in a typical data analysis project, you will quickly find that you need to write your own customized functions to carry out tasks specific to your needs. 
+
+One of the best ways to improve your reach as a data scientist is to write functions. Functions allow you to automate common tasks in a more powerful and general way than copy-and-pasting. 
+
+To start, let's assume that we have a vector of data, $x$ and we want compute the sum of the cubed value for each element. If we only need to do this once, we may not need to explicitly define a function but, rather, can just perform the calculation:
+
+```{r}
+set.seed(1)
+x = rnorm(5)
+sum( x ^ 3 )
+```
+
+If we need to do this for many different vectors throughout our program, it may be more efficient to write a function to carry out this task. In this case we may write,
+
+```{r}
+# input: numeric vector
+# output: sum of cubed values over each element
+
+sum.cubes = function(x) {
+  return(sum(x ^ 3))
+}
+
+sum.cubes(x)
+```
+
+We  could also assume that we do not have a built in function that computes the standard deviation (of course, there is). We could write this function as,
+
+```{r}
+# input: numeric vector
+# output: sample standard deviation
+
+sd.custom = function(x) {
+  n = length(x) # number of datapoints
+  v = 1/(n-1) * sum( (x - mean(x))^2 ) # variance
+  return( sqrt(v) )
+}
+
+sd.custom(x)
+sd(x)
+```
+
+
+
+A function has three parts:
+
+- The <code>formals()</code>, the list of arguments that control how you call the function.
+
+- The <code>body()</code>, the code inside the function.
+
+- The <code>environment()</code>, the data structure that determines how the function finds the values associated with the names.
+
+# arguments + data: Ci
+6. <code>q2()</code>: mean_ci <- function(x, conf = 0.95) {
+  se <- sd(x) / sqrt(length(x))
+  alpha <- 1 - conf
+  mean(x) + se * qnorm(c(alpha / 2, 1 - alpha / 2))
+}
+
+# back to last time with beta
+
+
+
+#### Exercises
+
+1. <code>q1()</code>: a function that takes a numeric vector as input and returns the number of elements that are less than 10. 
+
+2. <code>q2()</code>: a function that takes a numeric vector as input and returns the range of the elements (difference between the max and the min).
+
+3. <code>both_na()</code>: a function that takes two vectors of the same length and returns the number of positions that have an <code>NA</code> in both vectors. Hint: use the built in <code>is.na()</code> function.
+
+4. <code>skew()</code>: a function that takes a numeric vector argument and returns the skew, using the following definition:
+
+\begin{equation}
+\text{skew(x)} = \frac{1/(n-2) \sum_{i=1}^n (x_i-\bar{x})^3 }{var(x)^{3/2}}
+\end{equation}
+
+5. <code>q5()</code>: function takes numeric vector argument and changes each element to 1 if the element is $>1$ and 0 otherwise.
+
+6. (optional) 
+
+
+
+
+
