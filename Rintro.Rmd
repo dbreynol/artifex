@@ -5,7 +5,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-# 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
 ```
 
 ### R Fundamentals 
