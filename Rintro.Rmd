@@ -1,6 +1,8 @@
 ---
-#title: "r"
+title: "R intro"
 output: html_document
+header-includes:
+  - \AtBeginDocument{\let\maketitle\relax}
 ---
 
 ```{r setup, include=FALSE}

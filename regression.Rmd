@@ -1,5 +1,8 @@
 ---
+title: "Regression basics"
 output: html_document
+header-includes:
+  - \AtBeginDocument{\let\maketitle\relax}
 ---
 
 ```{r setup, include=FALSE}
