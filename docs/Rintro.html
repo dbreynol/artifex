@@ -391,15 +391,38 @@ plot(beta.seq, yvals,
 <ol style="list-style-type: decimal">
 <li><p><code>q1()</code>: a function that takes a numeric vector as input and returns the number of elements that are less than 10.</p></li>
 <li><p><code>q2()</code>: a function that takes a numeric vector as input and returns the range of the elements (difference between the max and the min).</p></li>
-<li><p><code>both_na()</code>: a function that takes two vectors of the same length and returns the number of positions that have an <code>NA</code> in both vectors. Hint: use the built in <code>is.na()</code> function.</p></li>
-<li><p><code>skew()</code>: a function that takes a numeric vector argument and returns the skew, using the following definition:</p></li>
+<li><p><code>both_na()</code>: a function that takes two vectors of the same length and returns the number of positions that have an <code>NA</code> in both vectors. Hint: use the built in <code>is.na()</code> function. Feel free to use the code below to generate test vectors. Your function should return a value equal to the answer variable defined below.</p></li>
+</ol>
+<pre class="r"><code>set.seed(1)
+n = 10000
+str1 = rbinom(n, 1, .5)
+str2 = rbinom(n, 1, .5)
+
+t1 = ifelse(str1 == 1, NA, str1) # test vector 1
+t2 = ifelse(str2 == 1, NA, str2) # test vector 2
+
+answer = length(which( (str1 + str2) == 2 )) # your function should match this</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li><code>skew()</code>: a function that takes a numeric vector argument and returns the skew, using the following definition:</li>
 </ol>
 <p><span class="math display">\[\begin{equation}
 \text{skew(x)} = \frac{1/(n-2) \sum_{i=1}^n (x_i-\bar{x})^3 }{var(x)^{3/2}}
 \end{equation}\]</span></p>
+<p>You can generate test data as below:</p>
+<pre class="r"><code>set.seed(2)
+n = 10000
+x = rnorm(n)</code></pre>
+<p>In which case your function should return -0.0146668.</p>
 <ol start="5" style="list-style-type: decimal">
 <li><p><code>q5()</code>: function takes numeric vector argument and changes each element to 1 if the element is <span class="math inline">\(&gt;1\)</span> and 0 otherwise.</p></li>
-<li><p>(Optional, but mandatory if you finish 1-5 in class) <code>q6()</code>: function that finds the sum of squared errors for <span class="math inline">\((\beta_0, \beta_1)\)</span> in a simple linear regression model. Use output from this function and a 3d plot using <code>persp()</code> to obtain least squares estimates. Verify using <code>lm()</code>.</p></li>
+<li><p>Use code (functions) as well as math to check to see if the following two expressions are equal to one another. When writing code, generate two vectors of equal length (referred to below as <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>) and use them as arguments in your function. To check using math, carry out the multiplication in <cod>exp1</code> and see if you can reduce it to <cod>exp2</code>.</p></li>
+</ol>
+<p><span class="math display">\[\begin{align}
+\text{exp1} &amp;= \sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y}) \\
+\text{exp2} &amp;= \sum_{i=1}^n (x_i - \bar{x})y_i
+\end{align}\]</span></p>
+<ol start="7" style="list-style-type: decimal">
+<li>(Optional, but mandatory if you finish 1-6 in class) <code>q6()</code>: function that finds the sum of squared errors for <span class="math inline">\((\beta_0, \beta_1)\)</span> in a simple linear regression model. Use output from this function and a 3d plot using <code>persp()</code> to obtain least squares estimates. Verify using <code>lm()</code>.</li>
 </ol>
 </div>
 </div>
