@@ -73,14 +73,32 @@ P(t_{\alpha/2} < T < t_{1-\alpha/2}) = (1-\alpha)
 
 In more realistic scenarios, we may not be able to obtain analytic results for the variance of an estimator. Fortunately, there are some workarounds. One such method is the bootstrap. The bootstrap is incredibly simple and effective. Let's denote our sample as $\mathbf{X} = (X_1,\ldots,X_n)$ and the statistic as $T(\mathbf{X})$. The algorithm consists two key steps. For $i \in 1,\ldots,n$:
 
-1. Resample the original data (with replacement). This results in a resampled dataset, $\mathbf{X^\star}$, that is the same size as the original data.
+1. Resample the original data (with replacement). This results in a *new* dataset, $\mathbf{X^\star}$, that is the same size as the original data.
 2. Compute the desired statistic on the resampled data. This results in a number,  $s_i = T(\mathbf{X}^\star)$
 
 This results in a sample of statistics $\mathbf{s}=(s_1, \ldots,s_B)$. We can then estimate the variance of the statistic as the sample variance: $\text{var}(\mathbf{s})$. 
 
 Let's first do a simple example before returning to linear regression. Suppose we would like to estimate the variance of the sample mean. Let's write a bootstrap algorithm to do this. 
 
-Now, back to regression
+```{r}
+# first, let's sample some data
+set.seed(2)
+orig.sample = rexp(1000, rate = 2)
+
+B = 1e4
+means = rep(0, B)
+for(i in 1:B) {
+  newdat.inds = sample(1000, 1000, replace = T)
+  newdat = orig.sample[newdat.inds]
+  means[i] = mean(newdat)
+}
+
+print(c(mean(means), sd(means)))
+```
+
+
+
+Now, back to regression. Let's use the same framework to estimate the variance of the slope coefficient.
 
 ```{r}
 

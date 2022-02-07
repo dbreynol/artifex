@@ -410,12 +410,26 @@ P(t_{\alpha/2} &lt; T &lt; t_{1-\alpha/2}) = (1-\alpha)
 <h4>Bootstrap</h4>
 <p>In more realistic scenarios, we may not be able to obtain analytic results for the variance of an estimator. Fortunately, there are some workarounds. One such method is the bootstrap. The bootstrap is incredibly simple and effective. Let’s denote our sample as <span class="math inline">\(\mathbf{X} = (X_1,\ldots,X_n)\)</span> and the statistic as <span class="math inline">\(T(\mathbf{X})\)</span>. The algorithm consists two key steps. For <span class="math inline">\(i \in 1,\ldots,n\)</span>:</p>
 <ol style="list-style-type: decimal">
-<li>Resample the original data (with replacement). This results in a resampled dataset, <span class="math inline">\(\mathbf{X^\star}\)</span>, that is the same size as the original data.</li>
+<li>Resample the original data (with replacement). This results in a <em>new</em> dataset, <span class="math inline">\(\mathbf{X^\star}\)</span>, that is the same size as the original data.</li>
 <li>Compute the desired statistic on the resampled data. This results in a number, <span class="math inline">\(s_i = T(\mathbf{X}^\star)\)</span></li>
 </ol>
 <p>This results in a sample of statistics <span class="math inline">\(\mathbf{s}=(s_1, \ldots,s_B)\)</span>. We can then estimate the variance of the statistic as the sample variance: <span class="math inline">\(\text{var}(\mathbf{s})\)</span>.</p>
 <p>Let’s first do a simple example before returning to linear regression. Suppose we would like to estimate the variance of the sample mean. Let’s write a bootstrap algorithm to do this.</p>
-<p>Now, back to regression</p>
+<pre class="r"><code># first, let&#39;s sample some data
+set.seed(2)
+orig.sample = rexp(1000, rate = 2)
+
+B = 1e4
+means = rep(0, B)
+for(i in 1:B) {
+  newdat.inds = sample(1000, 1000, replace = T)
+  newdat = orig.sample[newdat.inds]
+  means[i] = mean(newdat)
+}
+
+print(c(mean(means), sd(means)))</code></pre>
+<pre><code>## [1] 0.51801949 0.01611761</code></pre>
+<p>Now, back to regression. Let’s use the same framework to estimate the variance of the slope coefficient.</p>
 <pre class="r"><code>nIter = 10000
 beta.vec = array(NA, dim = c(nIter, 2))
 
@@ -429,7 +443,7 @@ for(i in 1:nIter) {
 
 
 print(sd(beta.vec[,2]))</code></pre>
-<pre><code>## [1] 0.03311198</code></pre>
+<pre><code>## [1] 0.03310038</code></pre>
 </div>
 <div id="exercises-3" class="section level4">
 <h4>Exercises 3</h4>
@@ -538,7 +552,7 @@ NA
   theme_minimal() + 
   ggtitle(&quot;High School Graduation Rate versus Poverty - 2019 Data&quot;)</code></pre>
 <pre><code>## Warning: Removed 1876 rows containing missing values (geom_point).</code></pre>
-<p><img src="regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="regression_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>It seems like fitting a linear regression to this data is reasonable. To do so, we only need a simple function in R, <code>lm</code>. Let’s fit the model and see what we get.</p>
 <pre class="r"><code>mod = lm(poverty_2019 ~ hs_grad_2019, data = dat)
 kable(tidy(mod)) %&gt;% kable_styling(position = &quot;center&quot;) # requires broom package</code></pre>
