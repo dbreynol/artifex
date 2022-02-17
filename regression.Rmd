@@ -13,6 +13,56 @@ library(broom) # tidy function
 library(pander)
 ```
 
+### 3. Prediction (and matrix algebra) 
+
+Let's define the following matrices,
+
+\[A = \begin{bmatrix}
+7 & 9 & 2\\
+1 & 4 & 6\\
+1 & 8 & 6
+\end{bmatrix} 
+\qquad
+B = \begin{bmatrix}
+7 & 9 & 2\\
+1 & 4 & 6\\
+1 & 8 & 6
+\end{bmatrix} \]
+
+## practice with sigma
+
+\[X = \begin{bmatrix}
+x_{11} & x_{12}\\
+x_{21} & x_{22}
+\end{bmatrix}
+\qquad
+Y = \begin{bmatrix}
+y_{11} & y_{12}\\
+y_{21} & y_{22}
+\end{bmatrix} \]
+
+## generalizing to our model
+
+\[
+A = \begin{bmatrix} 
+    a_{11} & a_{12} & \dots \\
+    \vdots & \ddots & \\
+    a_{K1} &        & a_{KK} 
+    \end{bmatrix}
+\qquad
+B = \begin{bmatrix} 
+    b_{11} & \dots  & b_{1M}\\
+    \vdots & \ddots & \vdots\\
+    b_{K1} & \dots  & b_{KM} 
+    \end{bmatrix}
+\]
+
+
+```{r echo=FALSE}
+A = matrix(c(7,1,1,9,4,8,2,6,6), nrow = 3)
+```
+
+
 ### 2. Fundamentals of Linear Regression - Inference 
 
 Last time, we discussed a few ways to estimate the slope coefficient in a linear regression model. This yields a point estimate. The other key ingredient for inference is to determine how much uncertainty there is in our estimate. For the case of $\hat{\beta_1}$, we want to know how much this estimate varies from sample to sample for the specified sample size. That is, we want to know the variance of the estimate:
