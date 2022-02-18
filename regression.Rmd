@@ -29,7 +29,15 @@ B = \begin{bmatrix}
 1 & 8 & 6
 \end{bmatrix} \]
 
-## practice with sigma
+In R, once you input the values of a matrix, using either <code>matrix</code> or <code>array</code>, you can multiple matrices using <code>A %*% B</code>. Also, you can compute a matrix inverse using <code>solve(A)</code>.
+
+**Exercises 4A**
+
+1. What is $AB$. Compute by hand and verify with R.
+2. What is $A^{-1}$. Compute by hand and verify with R.
+3. What is $A^\top B$. Compute by hand and verify with R.
+
+Now let's shift a little to working with 'general' matrices and construct expressions for some matrix operations. In particular, let's work with the following matrices,
 
 \[X = \begin{bmatrix}
 x_{11} & x_{12}\\
@@ -41,21 +49,77 @@ y_{11} & y_{12}\\
 y_{21} & y_{22}
 \end{bmatrix} \]
 
-## generalizing to our model
+**Exercises 4B**
+
+1. What is $X^{-1}$
+2. What is $X ^ \top$
+2. What is $XY$ (i.e., $X$ times $Y$; use $\Sigma$ notation)
+3. What is $(XY)^{-1}$
+
+Back to linear regression. By representing our model in matrix notation, we can 
+
+\begin{equation}
+Y = X \beta + \epsilon
+\end{equation}
+
+It can be shown that the least squares estimate for $\beta$ in this model is,
+
+\begin{equation}
+\hat{\beta} = (X^\top X)^{-1} (X^\top Y)
+\end{equation}
+
+Additionally, the variance/ covariance for $\hat{\beta}$ can be packaged up into a matrix:
+
+\begin{equation}
+\hat{\beta} = \sigma^2 (X^\top X)^{-1}
+\end{equation}
+
+For the case of simple linear regression (SLR), this is:
 
 \[
-A = \begin{bmatrix} 
-    a_{11} & a_{12} & \dots \\
-    \vdots & \ddots & \\
-    a_{K1} &        & a_{KK} 
+\begin{bmatrix} 
+    y_1  \\
+    \vdots  \\
+    y_n  
+    \end{bmatrix} 
+    \qquad
+    = \begin{bmatrix} 
+    1 & x_1 \\
+    \vdots & \vdots \\
+    1 & x_n 
     \end{bmatrix}
-\qquad
-B = \begin{bmatrix} 
-    b_{11} & \dots  & b_{1M}\\
-    \vdots & \ddots & \vdots\\
-    b_{K1} & \dots  & b_{KM} 
+    \begin{bmatrix} 
+    \beta_0 \\
+    \beta_1 
+    \end{bmatrix} + 
+    \begin{bmatrix}
+    e_1  \\
+    \vdots  \\
+    e_n  
     \end{bmatrix}
 \]
+
+**Exercises 4C**
+
+The following questions pertain to the simple linear regression (SLR) case. 
+
+1. For the case of SLR, the variance matrix for $(\hat{\beta_0}, \hat{\beta_1})$ is:
+
+\[Var(\hat{\boldsymbol{\beta}}) = \begin{bmatrix}
+Var(\hat{\beta_0}) & Cov(\hat{\beta_0}, \hat{\beta_1} )\\
+Cov(\hat{\beta_0}, \hat{\beta_1} ) & Var(\hat{\beta_0})
+\end{bmatrix}\] 
+
+What is $\sigma^2 (X^\top X)^{-1}$? (write it out using $\Sigma$ notation, similar to the last exercise set). 
+
+2. Take the lower right hand entry from the matrix above. Does it match what we got for $Var(\hat{\beta_1})$ in the inference section below (a little bit of simplification is required)?
+
+**Exercise 4D (If you finish the above)**
+
+1. Let's think about how much variation there is in the predicted outcome ($y$ value) for a new $x$
+
+
+
 
 
 ```{r echo=FALSE}

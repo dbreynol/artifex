@@ -310,6 +310,97 @@ $(document).ready(function () {
 </div>
 
 
+<div id="prediction-and-matrix-algebra" class="section level3">
+<h3>3. Prediction (and matrix algebra)</h3>
+<p>Let’s define the following matrices,</p>
+<p><span class="math display">\[A = \begin{bmatrix}
+7 &amp; 9 &amp; 2\\
+1 &amp; 4 &amp; 6\\
+1 &amp; 8 &amp; 6
+\end{bmatrix} 
+\qquad
+B = \begin{bmatrix}
+7 &amp; 9 &amp; 2\\
+1 &amp; 4 &amp; 6\\
+1 &amp; 8 &amp; 6
+\end{bmatrix} \]</span></p>
+<p>In R, once you input the values of a matrix, using either <code>matrix</code> or <code>array</code>, you can multiple matrices using <code>A %*% B</code>. Also, you can compute a matrix inverse using <code>solve(A)</code>.</p>
+<p><strong>Exercises 4A</strong></p>
+<ol style="list-style-type: decimal">
+<li>What is <span class="math inline">\(AB\)</span>. Compute by hand and verify with R.</li>
+<li>What is <span class="math inline">\(A^{-1}\)</span>. Compute by hand and verify with R.</li>
+<li>What is <span class="math inline">\(A^\top B\)</span>. Compute by hand and verify with R.</li>
+</ol>
+<p>Now let’s shift a little to working with ‘general’ matrices and construct expressions for some matrix operations. In particular, let’s work with the following matrices,</p>
+<p><span class="math display">\[X = \begin{bmatrix}
+x_{11} &amp; x_{12}\\
+x_{21} &amp; x_{22}
+\end{bmatrix}
+\qquad
+Y = \begin{bmatrix}
+y_{11} &amp; y_{12}\\
+y_{21} &amp; y_{22}
+\end{bmatrix} \]</span></p>
+<p><strong>Exercises 4B</strong></p>
+<ol style="list-style-type: decimal">
+<li>What is <span class="math inline">\(X^{-1}\)</span></li>
+<li>What is <span class="math inline">\(X ^ \top\)</span></li>
+<li>What is <span class="math inline">\(XY\)</span> (i.e., <span class="math inline">\(X\)</span> times <span class="math inline">\(Y\)</span>; use <span class="math inline">\(\Sigma\)</span> notation)</li>
+<li>What is <span class="math inline">\((XY)^{-1}\)</span></li>
+</ol>
+<p>Back to linear regression. By representing our model in matrix notation, we can</p>
+<p><span class="math display">\[\begin{equation}
+Y = X \beta + \epsilon
+\end{equation}\]</span></p>
+<p>It can be shown that the least squares estimate for <span class="math inline">\(\beta\)</span> in this model is,</p>
+<p><span class="math display">\[\begin{equation}
+\hat{\beta} = (X^\top X)^{-1} (X^\top Y)
+\end{equation}\]</span></p>
+<p>Additionally, the variance/ covariance for <span class="math inline">\(\hat{\beta}\)</span> can be packaged up into a matrix:</p>
+<p><span class="math display">\[\begin{equation}
+\hat{\beta} = \sigma^2 (X^\top X)^{-1}
+\end{equation}\]</span></p>
+<p>For the case of simple linear regression (SLR), this is:</p>
+<p><span class="math display">\[
+\begin{bmatrix} 
+    y_1  \\
+    \vdots  \\
+    y_n  
+    \end{bmatrix} 
+    \qquad
+    = \begin{bmatrix} 
+    1 &amp; x_1 \\
+    \vdots &amp; \vdots \\
+    1 &amp; x_n 
+    \end{bmatrix}
+    \begin{bmatrix} 
+    \beta_0 \\
+    \beta_1 
+    \end{bmatrix} + 
+    \begin{bmatrix}
+    e_1  \\
+    \vdots  \\
+    e_n  
+    \end{bmatrix}
+\]</span></p>
+<p><strong>Exercises 4C</strong></p>
+<p>The following questions pertain to the simple linear regression (SLR) case.</p>
+<ol style="list-style-type: decimal">
+<li>For the case of SLR, the variance matrix for <span class="math inline">\((\hat{\beta_0}, \hat{\beta_1})\)</span> is:</li>
+</ol>
+<p><span class="math display">\[Var(\hat{\boldsymbol{\beta}}) = \begin{bmatrix}
+Var(\hat{\beta_0}) &amp; Cov(\hat{\beta_0}, \hat{\beta_1} )\\
+Cov(\hat{\beta_0}, \hat{\beta_1} ) &amp; Var(\hat{\beta_0})
+\end{bmatrix}\]</span></p>
+<p>What is <span class="math inline">\(\sigma^2 (X^\top X)^{-1}\)</span>? (write it out using <span class="math inline">\(\Sigma\)</span> notation, similar to the last exercise set).</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Take the lower right hand entry from the matrix above. Does it match what we got for <span class="math inline">\(Var(\hat{\beta_1})\)</span> in the inference section below (a little bit of simplification is required)?</li>
+</ol>
+<p><strong>Exercise 4D (If you finish the above)</strong></p>
+<ol style="list-style-type: decimal">
+<li>Let’s think about how much variation there is in the predicted outcome (<span class="math inline">\(y\)</span> value) for a new <span class="math inline">\(x\)</span></li>
+</ol>
+</div>
 <div id="fundamentals-of-linear-regression---inference" class="section level3">
 <h3>2. Fundamentals of Linear Regression - Inference</h3>
 <p>Last time, we discussed a few ways to estimate the slope coefficient in a linear regression model. This yields a point estimate. The other key ingredient for inference is to determine how much uncertainty there is in our estimate. For the case of <span class="math inline">\(\hat{\beta_1}\)</span>, we want to know how much this estimate varies from sample to sample for the specified sample size. That is, we want to know the variance of the estimate:</p>
@@ -553,7 +644,7 @@ NA
   theme_minimal() + 
   ggtitle(&quot;High School Graduation Rate versus Poverty - 2019 Data&quot;)</code></pre>
 <pre><code>## Warning: Removed 1876 rows containing missing values (geom_point).</code></pre>
-<p><img src="regression_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="regression_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>It seems like fitting a linear regression to this data is reasonable. To do so, we only need a simple function in R, <code>lm</code>. Let’s fit the model and see what we get.</p>
 <pre class="r"><code>mod = lm(poverty_2019 ~ hs_grad_2019, data = dat)
 kable(tidy(mod)) %&gt;% kable_styling(position = &quot;center&quot;) # requires broom package</code></pre>
