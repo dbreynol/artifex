@@ -29,7 +29,14 @@ B = \begin{bmatrix}
 1 & 8 & 6
 \end{bmatrix} \]
 
-In R, once you input the values of a matrix, using either <code>matrix</code> or <code>array</code>, you can multiple matrices using <code>A %*% B</code>. Also, you can compute a matrix inverse using <code>solve(A)</code>.
+In R, once you input the values of a matrix, using either <code>matrix</code> or <code>array</code>, you can do matrix algebra operations on them such as:
+
+1. **Matrix addition**: $A + B$, <code>A + B</code>
+2. **Matrix multiplication**: $AB$, <code>A %*% B</code>
+3. **Inverting a matrix**: $A^{-1}$, <code>solve(A)</code>
+4. **Transposing a matrix**: $A^ \top$, <code>t(A)</code>
+
+Let's do some practice.
 
 **Exercises 4A**
 

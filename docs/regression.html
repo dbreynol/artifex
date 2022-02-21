@@ -324,7 +324,14 @@ B = \begin{bmatrix}
 1 &amp; 4 &amp; 6\\
 1 &amp; 8 &amp; 6
 \end{bmatrix} \]</span></p>
-<p>In R, once you input the values of a matrix, using either <code>matrix</code> or <code>array</code>, you can multiple matrices using <code>A %*% B</code>. Also, you can compute a matrix inverse using <code>solve(A)</code>.</p>
+<p>In R, once you input the values of a matrix, using either <code>matrix</code> or <code>array</code>, you can do matrix algebra operations on them such as:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Matrix addition</strong>: <span class="math inline">\(A + B\)</span>, <code>A + B</code></li>
+<li><strong>Matrix multiplication</strong>: <span class="math inline">\(AB\)</span>, <code>A %*% B</code></li>
+<li><strong>Inverting a matrix</strong>: <span class="math inline">\(A^{-1}\)</span>, <code>solve(A)</code></li>
+<li><strong>Transposing a matrix</strong>: <span class="math inline">\(A^ \top\)</span>, <code>t(A)</code></li>
+</ol>
+<p>Let’s do some practice.</p>
 <p><strong>Exercises 4A</strong></p>
 <ol style="list-style-type: decimal">
 <li>What is <span class="math inline">\(AB\)</span>. Compute by hand and verify with R.</li>
